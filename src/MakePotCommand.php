@@ -589,7 +589,7 @@ class MakePotCommand extends WP_CLI_Command {
 					'include'            => $this->include,
 					'exclude'            => $this->exclude,
 					'extensions'         => [ 'php' ],
-					'functions'         => explode( ',', $this->extra_gettext_function ),
+					'extra_functions'    => explode( ',', $this->extra_gettext_function ),
 				];
 				PhpCodeExtractor::fromDirectory( $this->source, $translations, $options );
 			}
