@@ -96,7 +96,7 @@ class MakePotCommand extends WP_CLI_Command {
 	/**
 	 * @var string
 	 */
-	protected $extra_gettext_function;
+	protected $gettext_function = '';
 
 	/**
 	 * @var string
@@ -284,16 +284,17 @@ class MakePotCommand extends WP_CLI_Command {
 		$array_arguments = array( 'headers' );
 		$assoc_args      = Utils\parse_shell_arrays( $assoc_args, $array_arguments );
 
-		$this->source          = realpath( $args[0] );
-		$this->slug            = Utils\get_flag_value( $assoc_args, 'slug', Utils\basename( $this->source ) );
-		$this->skip_js         = Utils\get_flag_value( $assoc_args, 'skip-js', $this->skip_js );
-		$this->skip_php        = Utils\get_flag_value( $assoc_args, 'skip-php', $this->skip_php );
-		$this->skip_block_json = Utils\get_flag_value( $assoc_args, 'skip-block-json', $this->skip_block_json );
-		$this->skip_audit      = Utils\get_flag_value( $assoc_args, 'skip-audit', $this->skip_audit );
-		$this->headers         = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
-		$this->file_comment    = Utils\get_flag_value( $assoc_args, 'file-comment' );
-		$this->package_name    = Utils\get_flag_value( $assoc_args, 'package-name' );
-		$this->extra_gettext_function    = Utils\get_flag_value( $assoc_args, 'add-gettext-function' );
+		$this->source           = realpath( $args[0] );
+		$this->slug             = Utils\get_flag_value( $assoc_args, 'slug', Utils\basename( $this->source ) );
+		$this->skip_js          = Utils\get_flag_value( $assoc_args, 'skip-js', $this->skip_js );
+		$this->skip_php         = Utils\get_flag_value( $assoc_args, 'skip-php', $this->skip_php );
+		$this->skip_block_json  = Utils\get_flag_value( $assoc_args, 'skip-block-json', $this->skip_block_json );
+		$this->skip_audit       = Utils\get_flag_value( $assoc_args, 'skip-audit', $this->skip_audit );
+		$this->headers          = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
+		$this->file_comment     = Utils\get_flag_value( $assoc_args, 'file-comment' );
+		$this->package_name     = Utils\get_flag_value( $assoc_args, 'package-name' );
+		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'add-gettext-function' );
+
 		$ignore_domain = Utils\get_flag_value( $assoc_args, 'ignore-domain', false );
 
 		if ( ! $this->source || ! is_dir( $this->source ) ) {
@@ -589,7 +590,7 @@ class MakePotCommand extends WP_CLI_Command {
 					'include'            => $this->include,
 					'exclude'            => $this->exclude,
 					'extensions'         => [ 'php' ],
-					'extra_functions'    => explode( ',', $this->extra_gettext_function ),
+					'extra_functions'    => ! empty($this->gettext_function) ? explode( ',', $this->gettext_function ) : [],
 				];
 				PhpCodeExtractor::fromDirectory( $this->source, $translations, $options );
 			}
