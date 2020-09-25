@@ -96,6 +96,11 @@ class MakePotCommand extends WP_CLI_Command {
 	/**
 	 * @var string
 	 */
+	protected $extra_gettext_function;
+
+	/**
+	 * @var string
+	 */
 	protected $project_type = 'generic';
 
 	/**
@@ -288,7 +293,7 @@ class MakePotCommand extends WP_CLI_Command {
 		$this->headers         = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
 		$this->file_comment    = Utils\get_flag_value( $assoc_args, 'file-comment' );
 		$this->package_name    = Utils\get_flag_value( $assoc_args, 'package-name' );
-
+		$this->extra_gettext_function    = Utils\get_flag_value( $assoc_args, 'add-gettext-function' );
 		$ignore_domain = Utils\get_flag_value( $assoc_args, 'ignore-domain', false );
 
 		if ( ! $this->source || ! is_dir( $this->source ) ) {
@@ -584,6 +589,7 @@ class MakePotCommand extends WP_CLI_Command {
 					'include'            => $this->include,
 					'exclude'            => $this->exclude,
 					'extensions'         => [ 'php' ],
+					'functions'         => explode( ',', $this->extra_gettext_function ),
 				];
 				PhpCodeExtractor::fromDirectory( $this->source, $translations, $options );
 			}
