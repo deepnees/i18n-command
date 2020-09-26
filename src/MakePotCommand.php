@@ -201,7 +201,7 @@ class MakePotCommand extends WP_CLI_Command {
 	 * [--headers=<headers>]
 	 * : Array in JSON format of custom headers which will be added to the POT file. Defaults to empty array.
 	 *
-	* [--gettext_function=<gettext_function>]
+	* [--gettext-function=<gettext-function>]
 	 * : Comma-separated list of function names.
 	 *
 	 * [--skip-js]
