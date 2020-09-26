@@ -201,6 +201,9 @@ class MakePotCommand extends WP_CLI_Command {
 	 * [--headers=<headers>]
 	 * : Array in JSON format of custom headers which will be added to the POT file. Defaults to empty array.
 	 *
+	* [--gettext_function=<gettext_function>]
+	 * : Comma-separated list of function names.
+	 *
 	 * [--skip-js]
 	 * : Skips JavaScript string extraction. Useful when this is done in another build step, e.g. through Babel.
 	 *
@@ -293,7 +296,7 @@ class MakePotCommand extends WP_CLI_Command {
 		$this->headers          = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
 		$this->file_comment     = Utils\get_flag_value( $assoc_args, 'file-comment' );
 		$this->package_name     = Utils\get_flag_value( $assoc_args, 'package-name' );
-		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'add-gettext-function' );
+		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'gettext_function', $this->gettext_function );
 
 		$ignore_domain = Utils\get_flag_value( $assoc_args, 'ignore-domain', false );
 
