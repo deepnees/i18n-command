@@ -96,6 +96,11 @@ class MakePotCommand extends WP_CLI_Command {
 	/**
 	 * @var string
 	 */
+	protected $gettext_function = '';
+
+	/**
+	 * @var string
+	 */
 	protected $project_type = 'generic';
 
 	/**
@@ -196,6 +201,9 @@ class MakePotCommand extends WP_CLI_Command {
 	 * [--headers=<headers>]
 	 * : Array in JSON format of custom headers which will be added to the POT file. Defaults to empty array.
 	 *
+	* [--gettext-function=<gettext-function>]
+	 * : Comma-separated list of function names.
+	 *
 	 * [--skip-js]
 	 * : Skips JavaScript string extraction. Useful when this is done in another build step, e.g. through Babel.
 	 *
@@ -279,15 +287,16 @@ class MakePotCommand extends WP_CLI_Command {
 		$array_arguments = array( 'headers' );
 		$assoc_args      = Utils\parse_shell_arrays( $assoc_args, $array_arguments );
 
-		$this->source          = realpath( $args[0] );
-		$this->slug            = Utils\get_flag_value( $assoc_args, 'slug', Utils\basename( $this->source ) );
-		$this->skip_js         = Utils\get_flag_value( $assoc_args, 'skip-js', $this->skip_js );
-		$this->skip_php        = Utils\get_flag_value( $assoc_args, 'skip-php', $this->skip_php );
-		$this->skip_block_json = Utils\get_flag_value( $assoc_args, 'skip-block-json', $this->skip_block_json );
-		$this->skip_audit      = Utils\get_flag_value( $assoc_args, 'skip-audit', $this->skip_audit );
-		$this->headers         = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
-		$this->file_comment    = Utils\get_flag_value( $assoc_args, 'file-comment' );
-		$this->package_name    = Utils\get_flag_value( $assoc_args, 'package-name' );
+		$this->source           = realpath( $args[0] );
+		$this->slug             = Utils\get_flag_value( $assoc_args, 'slug', Utils\basename( $this->source ) );
+		$this->skip_js          = Utils\get_flag_value( $assoc_args, 'skip-js', $this->skip_js );
+		$this->skip_php         = Utils\get_flag_value( $assoc_args, 'skip-php', $this->skip_php );
+		$this->skip_block_json  = Utils\get_flag_value( $assoc_args, 'skip-block-json', $this->skip_block_json );
+		$this->skip_audit       = Utils\get_flag_value( $assoc_args, 'skip-audit', $this->skip_audit );
+		$this->headers          = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
+		$this->file_comment     = Utils\get_flag_value( $assoc_args, 'file-comment' );
+		$this->package_name     = Utils\get_flag_value( $assoc_args, 'package-name' );
+		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'gettext-function', $this->gettext_function );
 
 		$ignore_domain = Utils\get_flag_value( $assoc_args, 'ignore-domain', false );
 
@@ -584,6 +593,7 @@ class MakePotCommand extends WP_CLI_Command {
 					'include'            => $this->include,
 					'exclude'            => $this->exclude,
 					'extensions'         => [ 'php' ],
+					'extra_functions'    => ! empty($this->gettext_function) ? explode( ',', $this->gettext_function ) : [],
 				];
 				PhpCodeExtractor::fromDirectory( $this->source, $translations, $options );
 			}

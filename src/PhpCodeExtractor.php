@@ -64,4 +64,28 @@ final class PhpCodeExtractor extends PhpCode {
 			);
 		}
 	}
+
+	/**
+	 * @inheritDoc
+	 * @throws Exception
+	 */
+	public static function fromStringMultiple($string, array $translations, array $options = [])
+	{
+		$options += static::$options;
+
+		if( ! empty( $options['extra_functions'] ) && is_array( $options['extra_functions'] ) ){
+			foreach( $options['extra_functions'] as $function ) {
+				$options['functions'][ $function ] = 'text_domain';
+			}
+		}
+
+		/** @var FunctionsScanner $functions */
+		$functions = new static::$functionsScannerClass($string);
+
+		if ($options['extractComments'] !== false) {
+		    $functions->enableCommentsExtraction($options['extractComments']);
+		}
+
+		$functions->saveGettextFunctions($translations, $options);
+	}
 }
