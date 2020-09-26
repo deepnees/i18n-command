@@ -296,7 +296,7 @@ class MakePotCommand extends WP_CLI_Command {
 		$this->headers          = Utils\get_flag_value( $assoc_args, 'headers', $this->headers );
 		$this->file_comment     = Utils\get_flag_value( $assoc_args, 'file-comment' );
 		$this->package_name     = Utils\get_flag_value( $assoc_args, 'package-name' );
-		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'gettext_function', $this->gettext_function );
+		$this->gettext_function = Utils\get_flag_value( $assoc_args, 'gettext-function', $this->gettext_function );
 
 		$ignore_domain = Utils\get_flag_value( $assoc_args, 'ignore-domain', false );
 
